@@ -54,4 +54,5 @@ def plot_top_clones(
     )
     ax.set_title('% of Total Copies\n({})'.format(df.copies.sum()))
     ax.set_ylabel('')
+
     return g, cdf
