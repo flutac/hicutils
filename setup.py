@@ -15,6 +15,7 @@ setup(
     ],
     install_requires=[
         'pandas>=1.5.1',
-        'seaborn>=0.12.1'
+        'seaborn>=0.12.1',
+        'scipy>=1.9.3'
     ],
 )
