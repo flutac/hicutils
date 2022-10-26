@@ -15,7 +15,6 @@ def plot_cdr3_aa_usage(df, pool, size_metric='clones', normalize_by='rows',
     assert size_metric in ('clones', 'copies', 'uniques')
     assert cluster_by in ('both', 'rows', 'cols')
     df = df.copy()
-    df.loc[:, 'clones'] = 1
 
     pdf = pd.concat(
         {k: _get_counts(d, size_metric) for k, d in df.groupby(pool)},

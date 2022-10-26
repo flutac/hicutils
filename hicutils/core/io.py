@@ -16,6 +16,7 @@ def read_tsvs(path, features=None):
         df['copies_fraction'] = df.copies / df.copies.sum()
         df['copies_percent'] = 100 * df['copies_fraction']
         df['shm'] = 100 * (1 - df['avg_v_identity'])
+        df['clones'] = 1
         df = df.sort_values('copies', ascending=False)
 
         dfs.append(df)
