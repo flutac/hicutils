@@ -12,3 +12,7 @@ jobs:
       - run:
           command: |
             pytest -s -v tests/
+workflows:
+  test:
+    jobs:
+      - build_test
