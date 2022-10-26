@@ -9,9 +9,9 @@ jobs:
           command: |
             python3 -m venv venv
             source venv/bin/activate
-            pip install numpy
-            python setup.py install
+            pip install numpy scipy
             pip install -r requirements.txt
+            python setup.py install
       - run:
           command: |
             pytest -s -v tests/
