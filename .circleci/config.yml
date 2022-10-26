@@ -1,0 +1,14 @@
+version: 2.1
+jobs:
+  build_test:
+    docker:
+      - image: circleci/python:3.8.0
+    steps:
+      - checkout
+      - run:
+          command: |
+            python setup.py install
+            pip install -r requirements.txt
+      - run:
+          command: |
+            pytest -s -v tests/
