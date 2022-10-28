@@ -16,6 +16,7 @@ setup(
     packages=[
         'hicutils',
         'hicutils.core',
+        'hicutils.plots',
     ],
     install_requires=install_requires
 )

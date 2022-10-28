@@ -3,9 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def plot_spectratype(
-        df,
-        color_top=10):
+def plot_spectratype(df, color_top=10):
     all_df = df.groupby('cdr3_num_nts').copies_percent.sum().reset_index()
     top_df = df.sort_values('copies_percent', ascending=False)[:color_top]
     cdf = (
@@ -13,7 +11,7 @@ def plot_spectratype(
         .concat([top_df, all_df], sort=False)
         .fillna('')
         .sort_values('copies_percent', ascending=False)
-    )
+    )[['cdr3_num_nts', 'copies_percent', 'cdr3_aa']]
 
     colors = ['#dddddd'] + sns.color_palette()
     g = sns.catplot(
