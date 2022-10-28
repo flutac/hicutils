@@ -4,4 +4,4 @@ A library with general utilities for processing AIRR-seq data for the Human Immu
 
 ## Installation
 
-- `python3 setup.py install`
+- `pip install -e .`
