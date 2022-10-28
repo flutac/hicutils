@@ -15,7 +15,11 @@ def plot_strings(
         pool,
         only_overlapping=True,
         overlapping_features=('clone_id', 'cdr3_aa', 'v_gene', 'j_gene'),
-        num_color=None):
+        scale=False,
+        logscale=False,
+        limit=None,
+        ylabels='counts',
+        **kwargs):
     df = df[:]
     df['label'] = df[list(overlapping_features)].apply(
         lambda c: ' '.join([str(s) for s in c]),
@@ -30,7 +34,7 @@ def plot_strings(
     ).fillna(0)
     pdf.columns = [
         '{} ({})'.format(k, int(v))
-        for k, v in (pdf / pdf).sum().iteritems()
+        for k, v in (pdf / pdf).sum().items()
     ]
     if len(pdf.columns) < 2:
         raise IndexError('Overlap plots must have at least two columns')
@@ -49,16 +53,23 @@ def plot_strings(
     )
     ret_df = pdf[:]
 
-    pdf = pdf.head(num_color if num_color else len(pdf))
+    pdf = pdf.head(limit or len(pdf))
     pdf = pdf.fillna(0)
     pdf = pdf[(pdf / pdf).sum().sort_values().index]
     pdf = pdf.reindex((pdf / pdf).sort_values(list(pdf.columns)).index)
 
-    if num_color:
+    if scale:
         pal = LinearSegmentedColormap.from_list(
             name='vdjtools',
             colors=['#2b8cbe', '#e0f3db', '#fdbb84']
         )
+        if logscale:
+            pdf = (
+                pdf
+                .apply(np.log10)
+                .replace(np.inf, 0)
+                .replace([np.inf, -np.inf], np.nan)
+            )
     else:
         pal = sns.diverging_palette(10, 240, s=95, sep=1, as_cmap=True)
         pdf = (pdf / pdf).reindex(
@@ -69,30 +80,32 @@ def plot_strings(
         g = sns.clustermap(
             data=pdf,
             cmap=pal,
-            figsize=(20, .3 * (num_color or 100)),
             mask=pdf == 0,
-            linewidths=1 if num_color else 0,
             row_cluster=False,
             col_cluster=False,
-            yticklabels=num_color is not None,
-            vmin=0 if not num_color else pdf.min().min(),
-            vmax=1 if not num_color else None,
+            vmin=pdf.min().min() if scale else 0,
+            vmax=pdf.min().max() if scale else 1,
             cbar_kws={
-                'label': '% of column'
-            }
+                'label': '% of column{}'.format(
+                    ' (log scale)' if logscale else ''
+                )
+            },
+            **kwargs
         )
 
-        if not num_color:
-            g.cax.set_visible(False)
-            labels = np.arange(1, len(pdf) + 1, max(1, len(pdf) // 5))
-            g.ax_heatmap.set_yticks(labels)
-            g.ax_heatmap.set_yticklabels(labels)
-        else:
+        if ylabels == 'full':
             g.ax_heatmap.set_yticklabels(
                 g.ax_heatmap.get_yticklabels(),
                 fontsize=8
             )
-        g.ax_heatmap.set_xlabel('')
-        g.ax_heatmap.set_ylabel('')
+        elif ylabels == 'counts':
+            labels = np.arange(1, len(pdf) + 1, max(1, len(pdf) // 5))
+            g.ax_heatmap.set_yticks(labels)
+            g.ax_heatmap.set_yticklabels(labels)
+
+    g.cax.set_visible(scale)
+
+    g.ax_heatmap.set_xlabel('')
+    g.ax_heatmap.set_ylabel('')
 
     return g, ret_df
