@@ -14,8 +14,8 @@ jobs:
             pip install -e .
       - run:
           command: |
-            cd tests
             source venv/bin/activate
+            cd tests
             pytest -s -v tests/
 workflows:
   test:
