@@ -16,7 +16,7 @@ jobs:
           command: |
             source venv/bin/activate
             cd tests
-            pytest -s -v tests/
+            pytest -s -v
 workflows:
   test:
     jobs:
