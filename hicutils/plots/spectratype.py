@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def plot_spectratype(df, color_top=10):
+def plot_spectratype(df, color_top=10, **kwargs):
     all_df = df.groupby('cdr3_num_nts').copies_percent.sum().reset_index()
     top_df = df.sort_values('copies_percent', ascending=False)[:color_top]
     cdf = (
@@ -21,8 +21,8 @@ def plot_spectratype(df, color_top=10):
         hue='cdr3_aa',
         kind='bar',
         dodge=False,
-        height=8,
-        aspect=3,
+        height=kwargs.get('height', 8),
+        aspect=kwargs.get('aspect', 3),
         legend=False,
         errorbar=None,
         palette=colors

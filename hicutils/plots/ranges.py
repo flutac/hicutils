@@ -45,7 +45,7 @@ def plot_ranges(
         df,
         pool,
         intervals=(0, 10, 100, 1000),
-        ):
+        **kwargs):
     portions = []
     total_clones = Counter()
 
@@ -92,7 +92,8 @@ def plot_ranges(
         (0.86, 0.86, 0.86)  # gray
     ]
 
-    ax = pdf.plot.bar(stacked=True, figsize=(12, 12), color=colors)
+    ax = pdf.plot.bar(stacked=True, figsize=kwargs.get('figsize', (12, 12)),
+                      color=colors)
     ax.set_yticklabels([round(abs(tick), 2) for tick in ax.get_yticks()])
     ax.set_xlabel('')
     ax.set_ylabel('Fraction of Copies')
