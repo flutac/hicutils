@@ -24,7 +24,7 @@ def read_tsvs(path, features=None):
     return pd.concat(dfs)
 
 
-def save_fig_and_data(name, df, path='./', **kwargs):
+def save_fig_and_data(name, df, path='./', ext='pdf', **kwargs):
     path = os.path.join(path, name)
     df.to_csv(path + '.tsv', sep='\t', **kwargs)
-    plt.savefig(path + '.pdf', bbox_inches='tight')
+    plt.savefig(path + '.{}'.format(ext), bbox_inches='tight')

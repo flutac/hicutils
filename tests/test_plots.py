@@ -78,20 +78,19 @@ def test_spectratype(color_top):
 
 
 @pytest.mark.parametrize(
-    'only_overlapping,overlapping_features,scale,logscale,limit',
+    'only_overlapping,overlapping_features,scale,limit',
     itertools.product(
         [True, False],
         [('cdr3_aa',), ('cdr3_aa', 'v_gene')],
-        [True, False],
-        [True, False],
-        [10, 100, 500]
+        [True, False, 'log'],
+        [10, 100, 500],
     )
 )
 def test_overlap_strings(only_overlapping, overlapping_features, scale,
-                         logscale, limit):
-    path = 'expected/overlap_strings_{}_{}_{}_{}_{}'.format(
+                         limit):
+    path = 'expected/overlap_strings_{}_{}_{}_{}'.format(
         only_overlapping, '-'.join(overlapping_features), scale,
-        logscale, limit
+        limit
     )
     g, pdf = plots.plot_strings(
         DF,
@@ -99,7 +98,6 @@ def test_overlap_strings(only_overlapping, overlapping_features, scale,
         only_overlapping=only_overlapping,
         overlapping_features=overlapping_features,
         scale=scale,
-        logscale=logscale,
         limit=limit
     )
     is_expected(pdf, path + '.tsv')

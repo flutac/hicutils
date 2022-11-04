@@ -16,11 +16,14 @@ def plot_strings(
         only_overlapping=True,
         overlapping_features=('clone_id', 'cdr3_aa', 'v_gene', 'j_gene'),
         scale=False,
-        logscale=False,
         limit=None,
         ylabels='counts',
+        order=None,
         **kwargs):
-    df = df[:]
+    assert ylabels in ('counts', 'full')
+    assert scale in (False, True, 'log')
+
+    df = df.copy()
     df['label'] = df[list(overlapping_features)].apply(
         lambda c: ' '.join([str(s) for s in c]),
         axis=1
@@ -32,12 +35,11 @@ def plot_strings(
         values='copies',
         aggfunc=np.sum
     ).fillna(0)
-    pdf.columns = [
-        '{} ({})'.format(k, int(v))
-        for k, v in (pdf / pdf).sum().items()
-    ]
+
     if len(pdf.columns) < 2:
         raise IndexError('Overlap plots must have at least two columns')
+
+    col_clone_counts = (pdf / pdf).sum()
 
     pdf = pdf.div(pdf.sum(axis=0), axis=1) * 100
     if only_overlapping:
@@ -55,26 +57,30 @@ def plot_strings(
 
     pdf = pdf.head(limit or len(pdf))
     pdf = pdf.fillna(0)
-    pdf = pdf[(pdf / pdf).sum().sort_values().index]
+    if order:
+        pdf = pdf[order]
+    else:
+        pdf = pdf[(pdf / pdf).sum().sort_values().index]
     pdf = pdf.reindex((pdf / pdf).sort_values(list(pdf.columns)).index)
+
+    pdf.columns = ['{} ({:.0f})'.format(*c) for c in col_clone_counts.items()]
+
+    if scale == 'log':
+        pdf = (
+            pdf
+            .apply(np.log10)
+            .replace(np.inf, 0)
+            .replace([np.inf, -np.inf], np.nan)
+        )
 
     if scale:
         pal = LinearSegmentedColormap.from_list(
             name='vdjtools',
-            colors=['#2b8cbe', '#e0f3db', '#fdbb84']
+            colors=['#2b8cbe', '#e0f3db', '#fdbb84'],
         )
-        if logscale:
-            pdf = (
-                pdf
-                .apply(np.log10)
-                .replace(np.inf, 0)
-                .replace([np.inf, -np.inf], np.nan)
-            )
     else:
         pal = sns.diverging_palette(10, 240, s=95, sep=1, as_cmap=True)
-        pdf = (pdf / pdf).reindex(
-            (pdf / pdf).sort_values(list(pdf.columns)).index
-        ).fillna(0)
+        pdf /= pdf
 
     with sns.axes_style('darkgrid'):
         g = sns.clustermap(
@@ -84,11 +90,13 @@ def plot_strings(
             row_cluster=False,
             col_cluster=False,
             vmin=pdf.min().min() if scale else 0,
-            vmax=pdf.min().max() if scale else 1,
+            vmax=pdf.max().max() if scale else 1,
+            cbar_pos=(0, .25, .03, .4),
+            dendrogram_ratio=(.2, .01) if scale else (0.01, 0.01),
             cbar_kws={
                 'label': '% of column{}'.format(
-                    ' (log scale)' if logscale else ''
-                )
+                    ' (log scale)' if scale == 'log' else ''
+                ),
             },
             **kwargs
         )
