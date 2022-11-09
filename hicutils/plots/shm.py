@@ -32,8 +32,8 @@ def plot_shm_distribution(df, pool, size_metric, **kwargs):
             y='size',
             hue=pool,
             kind='line',
-            height=8,
-            aspect=1.5,
+            height=kwargs.pop('height', 8),
+            aspect=kwargs.pop('aspect', 1.5),
             **kwargs
         )
         g.set(

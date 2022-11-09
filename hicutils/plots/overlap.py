@@ -53,17 +53,20 @@ def plot_strings(
         .sort_values('total', ascending=False)
         .drop('total', axis=1)
     )
-    ret_df = pdf[:]
+    ret_df = pdf.copy()
 
     pdf = pdf.head(limit or len(pdf))
     pdf = pdf.fillna(0)
     if order:
-        pdf = pdf[order]
+        pdf = pdf[order(pdf)]
     else:
         pdf = pdf[(pdf / pdf).sum().sort_values().index]
+
     pdf = pdf.reindex((pdf / pdf).sort_values(list(pdf.columns)).index)
 
-    pdf.columns = ['{} ({:.0f})'.format(*c) for c in col_clone_counts.items()]
+    pdf.columns = [
+        '{} ({:.0f})'.format(c, col_clone_counts[c]) for c in pdf.columns
+    ]
 
     if scale == 'log':
         pdf = (
