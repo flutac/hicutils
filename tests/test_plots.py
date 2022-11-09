@@ -65,6 +65,13 @@ def test_shm_distribution(size_metric):
     plt.savefig(path + '.pdf', bbox_inches='tight')
 
 
+def test_shm_aggregate():
+    path = 'expected/shm_aggregate'
+    g, pdf = plots.plot_shm_aggregate(DF, POOL)
+    is_expected(pdf, path + '.tsv')
+    plt.savefig(path + '.pdf', bbox_inches='tight')
+
+
 @pytest.mark.parametrize(
     'color_top',
     [5, 10, 20]
