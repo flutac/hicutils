@@ -1,1 +1,2 @@
 nbsphinx==0.8.9
+ipython==8.5.0
