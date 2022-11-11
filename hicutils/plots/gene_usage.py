@@ -35,7 +35,7 @@ def plot_gene_usage(df, pool, gene, size_metric='clones', normalize_by='rows',
 
     assert gene in ('v_gene', 'j_gene')
     assert size_metric in ('clones', 'copies', 'uniques')
-    assert cluster_by in ('both', 'rows', 'cols')
+
     df = df.copy()
     pdf = df.pivot_table(
         index=pool, columns=gene, values=size_metric, aggfunc=np.sum

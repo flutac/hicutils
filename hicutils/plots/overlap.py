@@ -20,6 +20,52 @@ def plot_strings(
         ylabels='counts',
         order=None,
         **kwargs):
+    '''
+    Creates an overlap string plot where each row represents a clone and each
+    column represents a pool.  Among other features, the definition of a clone
+    can be modified and the heatmap can be boolean or scaled to the number of
+    copies a clone comprises in each pool.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame to use for tracking clones.
+    pool : str
+        The column to use for pooling clones into columns.
+    only_overlapping : bool
+        If set to ``True`` (the default), only clones overlapping at least two
+        pools will be included in the overlap plot.
+    overlapping_features : list
+        The feature(s) to use to track clones across pools. By default the
+        ``clone_id`` value is used. To alter this behavior, this value can be
+        changed to any clonal information field such as ``cdr3_aa``,
+        ``v_gene``, ``j_gene``, and ``cdr3_nt``.
+
+        This is particularly useful to track clones across donors where the
+        ``clone_id`` will differ but the ``cdr3_aa`` can be used instead.
+    scale : bool or ``log``
+        If ``scale=False`` (the default) presence of a clone in a pool is
+        indicated by blue and absence by gray.  When ``scale=True`` the color
+        of each clone/pool indicates the total number of copies.  Setting
+        ``scale='log'`` changes the scale to be the log10 of copies.
+    limit : int or None
+        If set to an integer ``n``, limits the number of clones to the top
+        ``n``.
+    ylabels : ``counts`` or ``full``
+        If set to ``counts`` (the default) y-axis ticks will be shown
+        indicating the number of clones in the plot.  If set to ``full``, all
+        features in ``overlapping_features`` will be shown for each row.
+    order : function or None
+        A function that is passed the pd.DataFrame and shall return a list of
+        columns in the desired order.
+
+    Returns
+    -------
+    A tuple ``(g, df)`` where ``g`` is a handle to the plot and ``df`` is the
+    underlying DataFrame.
+
+
+    '''
     assert ylabels in ('counts', 'full')
     assert scale in (False, True, 'log')
 
