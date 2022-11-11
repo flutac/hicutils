@@ -5,6 +5,7 @@ from .heatmap import basic_clustermap
 
 
 def _get_counts(pdf, size_metric):
+    # TODO: Fix this to count clones only once if size_metric = clones
     return pd.DataFrame(pdf.cdr3_aa.apply(
         lambda r: pd.Series(Counter(r))
     ).fillna(0).mul(pdf[size_metric], axis=0).sum()).T

@@ -33,7 +33,8 @@ def test_cdr3_aa_usage(size_metric):
 )
 def test_gene_usage(gene, size_metric):
     path = 'expected/gene_usage_{}_{}'.format(gene, size_metric)
-    _, pdf = plots.plot_gene_usage(DF, POOL, gene, size_metric=size_metric)
+    _, pdf = plots.plot_gene_usage(DF, POOL, gene, size_metric=size_metric,
+                                   figsize=(12, 6))
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
 

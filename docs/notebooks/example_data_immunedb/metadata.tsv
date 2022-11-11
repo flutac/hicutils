@@ -1,0 +1,5 @@
+replicate_name	aab	aab_summary	age	age_units	biological_sample	comments	date_sample_received	disease	dq8_call	group	identifier	locus	molecule_type	percent_live_b_cells	replicate_number	sample_origin	sequencing_date	sequencing_type	species	umi	gad	ia2	iaa	znt8	date_hic_received	collapse_name
+IgH_HPAP015_rep1_200p0ng	1	yes	29	years	HPAP015			T1D	yes	human_igh	19-0485	IgH	DNA		1	SPL	2019-08-05	Bulk	human	0	neg	neg	pos	neg	2019-07-31
+IgH_HPAP015_rep2_200p0ng	1	yes	29	years	HPAP015			T1D	yes	human_igh	19-0485	IgH	DNA		2	SPL	2019-08-05	Bulk	human	0	neg	neg	pos	neg	2019-07-31
+IgH_HPAP017_rep1_200p0ng	1	yes	30	years	HPAP017			Control	no	human_igh	19-0487	IgH	DNA		1	SPL	2019-08-05	Bulk	human	0	pos	neg	neg	neg	2019-07-31
+IgH_HPAP017_rep2_200p0ng	1	yes	30	years	HPAP017			Control	no	human_igh	19-0487	IgH	DNA		2	SPL	2019-08-05	Bulk	human	0	pos	neg	neg	neg	2019-07-31
