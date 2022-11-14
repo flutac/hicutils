@@ -110,9 +110,7 @@ def plot_strings(
 
     pdf = pdf.reindex((pdf / pdf).sort_values(list(pdf.columns)).index)
 
-    pdf.columns = [
-        '{} ({:.0f})'.format(c, col_clone_counts[c]) for c in pdf.columns
-    ]
+    pdf.columns = [f'{c} ({col_clone_counts[c]:.0f})' for c in pdf.columns]
 
     if scale == 'log':
         pdf = (

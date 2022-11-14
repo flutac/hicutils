@@ -141,10 +141,10 @@ def plot_top_clones(
         y='percent',
         colors=colors,
         legend=False,
-        labels=['{}%'.format(round(frac, 1)), ''],
+        labels=[f'{round(frac, 1)}%', ''],
         ax=a
     )
-    ax.set_title('% of Total Copies\n({})'.format(df.copies.sum()))
+    ax.set_title(f'% of Total Copies\n({df.copies.sum()})')
     ax.set_ylabel('')
 
     return g, cdf

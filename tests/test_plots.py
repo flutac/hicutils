@@ -39,6 +39,18 @@ def test_cdr3_logo(by, length):
 
 
 @pytest.mark.parametrize(
+    'color_top',
+    [5, 10, 20]
+)
+def test_cdr3_spectratype(color_top):
+    path = f'expected/spectratype_{color_top}'
+    g, pdf = plots.plot_cdr3_spectratype(DF, color_top=color_top)
+    pdf = pdf.replace('', np.nan)
+    is_expected(pdf, path + '.tsv')
+    plt.savefig(path + '.pdf', bbox_inches='tight')
+
+
+@pytest.mark.parametrize(
     'gene,size_metric',
     itertools.product(
         ['v_gene', 'j_gene'],
@@ -72,7 +84,7 @@ def test_plot_ranges(intervals):
     ['clones', 'copies']
 )
 def test_shm_distribution(size_metric):
-    path = 'expected/shm_distribution_{}'.format(size_metric)
+    path = f'expected/shm_distribution_{size_metric}'
     g, pdf = plots.plot_shm_distribution(DF, POOL, size_metric=size_metric)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
@@ -93,22 +105,8 @@ def test_shm_aggregate():
     ]
 )
 def test_shm_range(buckets):
-    path = 'expected/shm_range_{}'.format('-'.join(
-        [str(c) for c in buckets]
-    ))
+    path = f'expected/shm_range_{"-".join([str(c) for c in buckets])}'
     g, pdf = plots.plot_shm_range(DF, POOL)
-    is_expected(pdf, path + '.tsv')
-    plt.savefig(path + '.pdf', bbox_inches='tight')
-
-
-@pytest.mark.parametrize(
-    'color_top',
-    [5, 10, 20]
-)
-def test_spectratype(color_top):
-    path = 'expected/spectratype_{}'.format(color_top)
-    g, pdf = plots.plot_spectratype(DF, color_top=color_top)
-    pdf = pdf.replace('', np.nan)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
 
@@ -124,9 +122,11 @@ def test_spectratype(color_top):
 )
 def test_overlap_strings(only_overlapping, overlapping_features, scale,
                          limit):
-    path = 'expected/overlap_strings_{}_{}_{}_{}'.format(
-        only_overlapping, '-'.join(overlapping_features), scale,
-        limit
+    path = (
+        f'expected/overlap_strings_'
+        f'{only_overlapping}_'
+        f'{"-".join(overlapping_features)}_'
+        f'{scale}_{limit}'
     )
     g, pdf = plots.plot_strings(
         DF,

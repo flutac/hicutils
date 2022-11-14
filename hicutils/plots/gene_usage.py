@@ -43,7 +43,7 @@ def plot_gene_usage(df, pool, gene, size_metric='clones', normalize_by='rows',
 
     total_clones = df.groupby(pool).clone_id.nunique()
     pdf.index = [
-        '{} ({})'.format(c, int(total_clones.loc[c]))
+        f'{c} ({int(total_clones.loc[c])})'
         for c in pdf.index
     ]
 

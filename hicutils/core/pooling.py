@@ -40,7 +40,7 @@ def pool_by(df, pool_by):
         pool_by = [pool_by]
 
     pool_by = [
-        'METADATA_{}'.format(p)
+        f'METADATA_{p}'
         if p not in ('subject', 'replicate_name') else p
         for p in pool_by
     ]

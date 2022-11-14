@@ -12,7 +12,7 @@ of Pennsylvania, but may be used with AIRR-seq output from other tools.
 Getting Started
 ---------------
 To get started, follow the :doc:`installation instructions <install>` and then
-continue to the :doc:`io`
+continue to the :doc:`io`.
 
 .. toctree::
    :maxdepth: 3

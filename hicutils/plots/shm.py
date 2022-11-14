@@ -6,7 +6,7 @@ import seaborn as sns
 
 def _add_counts(df, field):
     sizes = df.groupby(field).size()
-    df[field] = df[field].apply(lambda f: '{} ({})'.format(f, sizes[f]))
+    df[field] = df[field].apply(lambda f: f'{f} ({sizes[f]})')
     return df
 
 
@@ -61,7 +61,7 @@ def plot_shm_distribution(df, pool, size_metric, **kwargs):
         )
         g.set(
             xlabel='SHM (% of Mutated V-gene NT)',
-            ylabel='% of {}'.format(size_metric),
+            ylabel=f'% of {size_metric}',
         )
     return g, df
 
@@ -105,8 +105,8 @@ def _get_bucket(shm, buckets=(1, 2, 5, 10, 20)):
     buckets = [0, *buckets]
     for i, b in enumerate(buckets[:-1]):
         if b <= shm < buckets[i + 1]:
-            return '[{}-{})'.format(b, buckets[i + 1])
-    return '{}+'.format(buckets[-1])
+            return f'[{b}-{buckets[i + 1]})'
+    return f'{buckets[-1]}+'
 
 
 def _sort_buckets(buckets):

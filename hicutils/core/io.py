@@ -65,7 +65,7 @@ def read_metadata(path):
 
     '''
     metadata = pd.read_csv(path, sep='\t').set_index('replicate_name')
-    metadata.columns = ['METADATA_{}'.format(c) for c in metadata.columns]
+    metadata.columns = [f'METADATA_{c}' for c in metadata.columns]
     return metadata
 
 
@@ -113,8 +113,8 @@ def save_fig_and_data(name, df, path='./', ext='pdf', **kwargs):
     '''
 
     path = os.path.join(path, name)
-    df.to_csv(path + '.tsv', sep='\t', **kwargs)
-    plt.savefig(path + '.{}'.format(ext), bbox_inches='tight')
+    df.to_csv(f'{path}.tsv', sep='\t', **kwargs)
+    plt.savefig(f'{path}.{ext}', bbox_inches='tight')
 
 
 def _run_job_and_get_result(prefix, route, out_name):
