@@ -3,7 +3,7 @@ Installation
 
 Quick Install
 -------------
-To install run
+To install run:
 
 .. code-block:: bash
 

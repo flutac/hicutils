@@ -15,13 +15,27 @@ DF = io.read_tsvs('input', 'subject')
 
 @pytest.mark.parametrize(
     'size_metric',
-    ['clones', 'copies']
+    ('clones', 'copies')
 )
 def test_cdr3_aa_usage(size_metric):
-    path = 'expected/cdr3_aa_usage_{}'.format(size_metric)
+    path = f'expected/cdr3_aa_usage_{size_metric}'
     _, pdf = plots.plot_cdr3_aa_usage(DF, POOL, size_metric=size_metric)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
+
+
+@pytest.mark.parametrize(
+    'by,length',
+    [
+        ('cdr3_aa', 10),
+        ('cdr3_nt', 21)
+    ]
+)
+def test_cdr3_logo(by, length):
+    path = f'expected/cdr3_logo_{by}_{length}'
+    _, m = plots.plot_cdr3_logo(DF, by, length)
+    is_expected(m, f'{path}.tsv')
+    plt.savefig(f'{path}.pdf', bbox_inches='tight')
 
 
 @pytest.mark.parametrize(
@@ -32,7 +46,7 @@ def test_cdr3_aa_usage(size_metric):
     )
 )
 def test_gene_usage(gene, size_metric):
-    path = 'expected/gene_usage_{}_{}'.format(gene, size_metric)
+    path = f'expected/gene_usage_{gene}_{size_metric}'
     _, pdf = plots.plot_gene_usage(DF, POOL, gene, size_metric=size_metric,
                                    figsize=(12, 6))
     is_expected(pdf, path + '.tsv')
@@ -42,14 +56,12 @@ def test_gene_usage(gene, size_metric):
 @pytest.mark.parametrize(
     'intervals',
     [
-        (0, 10, 100, 1000),
-        (0, 20, 50, 100, 500, 1000),
+        (10, 100, 1000),
+        (20, 50, 100, 500, 1000),
     ]
 )
 def test_plot_ranges(intervals):
-    path = 'expected/range_{}'.format('-'.join([
-        str(s) for s in intervals
-    ]))
+    path = f'expected/range_{"-".join([str(s) for s in intervals])}'
     g, pdf = plots.plot_ranges(DF, POOL, intervals)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
@@ -69,6 +81,22 @@ def test_shm_distribution(size_metric):
 def test_shm_aggregate():
     path = 'expected/shm_aggregate'
     g, pdf = plots.plot_shm_aggregate(DF, POOL)
+    is_expected(pdf, path + '.tsv')
+    plt.savefig(path + '.pdf', bbox_inches='tight')
+
+
+@pytest.mark.parametrize(
+    'buckets',
+    [
+        (1, 10, 25),
+        (1, 2, 10, 15, 20)
+    ]
+)
+def test_shm_range(buckets):
+    path = 'expected/shm_range_{}'.format('-'.join(
+        [str(c) for c in buckets]
+    ))
+    g, pdf = plots.plot_shm_range(DF, POOL)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
 
@@ -113,14 +141,11 @@ def test_overlap_strings(only_overlapping, overlapping_features, scale,
 
 
 @pytest.mark.parametrize(
-    'cutoff,annotate',
-    itertools.product(
-        [10, 20, 50],
-        [True, False]
-    )
+    'cutoff',
+    [10, 20, 50]
 )
-def test_top_clones(cutoff, annotate):
-    path = 'expected/top_clones_{}_{}'.format(cutoff, annotate)
+def test_top_clones(cutoff):
+    path = f'expected/top_clones_{cutoff}'
     g, pdf = plots.plot_top_clones(DF, cutoff=cutoff)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
