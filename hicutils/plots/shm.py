@@ -163,7 +163,7 @@ def plot_shm_range(df, pool, buckets=(1, 10, 25), **kwargs):
             .plot
             .bar(
                 stacked=True,
-                figsize=kwargs.pop('figsize', (8, 6)),
+                figsize=kwargs.pop('figsize', (12, 8)),
                 color=kwargs.pop('color', sns.color_palette()[1:]),
                 legend='reverse'
             )
@@ -174,7 +174,7 @@ def plot_shm_range(df, pool, buckets=(1, 10, 25), **kwargs):
             reversed(handles),
             reversed(labels),
             loc='upper right',
-            bbox_to_anchor=(1.22, 1),
+            bbox_to_anchor=(1.3, 1),
             title='SHM %'
         )
 

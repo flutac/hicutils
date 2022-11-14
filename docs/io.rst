@@ -1,6 +1,6 @@
 Loading Data
 ============
-There are two ways to load AIRR-seq data in ``hicutils``:
+There are multiple ways to load AIRR-seq data in ``hicutils``:
 
 #. Directly downloading and loading data from a hosted ImmuneDB instance using
    its URL and database name.
