@@ -10,7 +10,7 @@ from .expected import is_expected
 
 
 POOL = 'subject'
-DF = io.read_tsvs('tests/input', 'subject')
+DF = io.read_tsvs('tests/input', 'disease')
 
 
 @pytest.mark.parametrize(

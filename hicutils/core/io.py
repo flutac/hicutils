@@ -33,6 +33,8 @@ def read_tsvs(path, features=None):
     '''
     if features and isinstance(features, str):
         features = [features]
+    assert 'subject' not in features
+
     dfs = []
     for fn in glob.glob(os.path.join(path, '*.pooled.tsv')):
         df = pd.read_csv(fn, sep='\t', dtype={'subject': str})
