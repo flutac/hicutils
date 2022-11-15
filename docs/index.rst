@@ -1,11 +1,13 @@
 ``hicutils``: HIC utilities for AIRR-seq data
 =============================================
-|circleci| |docs|
+|circleci| |codecov| |docs|
 
 .. |circleci| image:: https://dl.circleci.com/status-badge/img/gh/PennHIC/hicutils/tree/main.svg?style=shield
    :target: https://dl.circleci.com/status-badge/redirect/gh/PennHIC/hicutils/tree/main
 .. |docs| image:: https://readthedocs.org/projects/hicutils/badge/?version=latest
     :target: https://hicutils.readthedocs.io/en/latest/?badge=latest
+.. |codecov| image:: https://codecov.io/github/PennHIC/hicutils/branch/main/graph/badge.svg?token=8WXJNSEXEV
+    :target: https://codecov.io/github/PennHIC/hicutils
 
 The ``hicutils`` package is a suite of tools for loading, filtering,
 manipulating, and plotting `AIRR-seq
