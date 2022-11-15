@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-   codecov: codecov/codecov@3
 jobs:
   build_test:
     docker:
@@ -16,7 +14,11 @@ jobs:
           command: |
             cd tests
             coverage run -m pytest -s -v
-      - codecov/upload tests/.coverage
+      - run:
+          command: |
+            curl -Os https://uploader.codecov.io/latest/linux/codecov
+            chmod +x codecov
+            ./codecov tests/.coverage
 workflows:
   test:
     jobs:
