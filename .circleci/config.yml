@@ -16,7 +16,7 @@ jobs:
           command: |
             cd tests
             coverage run -m pytest -s -v
-      - codecov/upload tests
+      - codecov/upload tests/.coverage
 workflows:
   test:
     jobs:
