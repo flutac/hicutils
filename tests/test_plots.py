@@ -10,7 +10,7 @@ from .expected import is_expected
 
 
 POOL = 'subject'
-DF = io.read_tsvs('input', 'subject')
+DF = io.read_tsvs('tests/input', 'subject')
 
 
 @pytest.mark.parametrize(
@@ -18,7 +18,7 @@ DF = io.read_tsvs('input', 'subject')
     ('clones', 'copies')
 )
 def test_cdr3_aa_usage(size_metric):
-    path = f'expected/cdr3_aa_usage_{size_metric}'
+    path = f'tests/expected/cdr3_aa_usage_{size_metric}'
     _, pdf = plots.plot_cdr3_aa_usage(DF, POOL, size_metric=size_metric)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
@@ -32,7 +32,7 @@ def test_cdr3_aa_usage(size_metric):
     ]
 )
 def test_cdr3_logo(by, length):
-    path = f'expected/cdr3_logo_{by}_{length}'
+    path = f'tests/expected/cdr3_logo_{by}_{length}'
     _, m = plots.plot_cdr3_logo(DF, by, length)
     is_expected(m, f'{path}.tsv')
     plt.savefig(f'{path}.pdf', bbox_inches='tight')
@@ -43,7 +43,7 @@ def test_cdr3_logo(by, length):
     [5, 10, 20]
 )
 def test_cdr3_spectratype(color_top):
-    path = f'expected/spectratype_{color_top}'
+    path = f'tests/expected/spectratype_{color_top}'
     g, pdf = plots.plot_cdr3_spectratype(DF, color_top=color_top)
     pdf = pdf.replace('', np.nan)
     is_expected(pdf, path + '.tsv')
@@ -58,7 +58,7 @@ def test_cdr3_spectratype(color_top):
     )
 )
 def test_gene_usage(gene, size_metric):
-    path = f'expected/gene_usage_{gene}_{size_metric}'
+    path = f'tests/expected/gene_usage_{gene}_{size_metric}'
     _, pdf = plots.plot_gene_usage(DF, POOL, gene, size_metric=size_metric,
                                    figsize=(12, 6))
     is_expected(pdf, path + '.tsv')
@@ -73,7 +73,7 @@ def test_gene_usage(gene, size_metric):
     ]
 )
 def test_plot_ranges(intervals):
-    path = f'expected/range_{"-".join([str(s) for s in intervals])}'
+    path = f'tests/expected/range_{"-".join([str(s) for s in intervals])}'
     g, pdf = plots.plot_ranges(DF, POOL, intervals)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
@@ -84,14 +84,14 @@ def test_plot_ranges(intervals):
     ['clones', 'copies']
 )
 def test_shm_distribution(size_metric):
-    path = f'expected/shm_distribution_{size_metric}'
+    path = f'tests/expected/shm_distribution_{size_metric}'
     g, pdf = plots.plot_shm_distribution(DF, POOL, size_metric=size_metric)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
 
 
 def test_shm_aggregate():
-    path = 'expected/shm_aggregate'
+    path = 'tests/expected/shm_aggregate'
     g, pdf = plots.plot_shm_aggregate(DF, POOL)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
@@ -105,7 +105,7 @@ def test_shm_aggregate():
     ]
 )
 def test_shm_range(buckets):
-    path = f'expected/shm_range_{"-".join([str(c) for c in buckets])}'
+    path = f'tests/expected/shm_range_{"-".join([str(c) for c in buckets])}'
     g, pdf = plots.plot_shm_range(DF, POOL)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
@@ -123,7 +123,7 @@ def test_shm_range(buckets):
 def test_overlap_strings(only_overlapping, overlapping_features, scale,
                          limit):
     path = (
-        f'expected/overlap_strings_'
+        f'tests/expected/overlap_strings_'
         f'{only_overlapping}_'
         f'{"-".join(overlapping_features)}_'
         f'{scale}_{limit}'
@@ -145,7 +145,7 @@ def test_overlap_strings(only_overlapping, overlapping_features, scale,
     [10, 20, 50]
 )
 def test_top_clones(cutoff):
-    path = f'expected/top_clones_{cutoff}'
+    path = f'tests/expected/top_clones_{cutoff}'
     g, pdf = plots.plot_top_clones(DF, cutoff=cutoff)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')

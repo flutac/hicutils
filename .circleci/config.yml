@@ -10,15 +10,12 @@ jobs:
             pip install --upgrade pip
             pip install pytest coverage
             pip install -e .
-      - run:
-          command: |
-            cd tests
-            coverage run -m pytest -s -v
-      - run:
-          command: |
             curl -Os https://uploader.codecov.io/latest/linux/codecov
             chmod +x codecov
-            ./codecov tests/.coverage
+      - run:
+          command: |
+            coverage run -m pytest -s -v tests
+            ./codecov
 workflows:
   test:
     jobs:

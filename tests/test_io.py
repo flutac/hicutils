@@ -7,9 +7,9 @@ from .expected import is_expected
 @pytest.mark.parametrize(
     'path,features',
     [
-        ('input', 'disease'),
+        ('tests/input', 'disease'),
     ]
 )
 def test_read_tsvs(path, features):
     df = io.read_tsvs(path, features)
-    is_expected(df, 'expected/io_test.tsv')
+    is_expected(df, 'tests/expected/io_test.tsv')
