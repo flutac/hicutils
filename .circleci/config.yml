@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+   codecov: codecov/codecov@3
 jobs:
   build_test:
     docker:
@@ -7,19 +9,14 @@ jobs:
       - checkout
       - run:
           command: |
-            python3 -m venv venv
-            source venv/bin/activate
             pip install --upgrade pip
             pip install pytest coverage
             pip install -e .
       - run:
           command: |
-            source venv/bin/activate
             cd tests
             coverage run -m pytest -s -v
-            curl -Os https://uploader.codecov.io/latest/linux/codecov
-            chmod +x codecov
-            ./codecov
+      - codecov/upload tests
 workflows:
   test:
     jobs:
