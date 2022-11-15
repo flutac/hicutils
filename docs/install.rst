@@ -8,8 +8,7 @@ To install run:
 .. code-block:: bash
 
     git clone https://github.com/PennHIC/hicutils.git
-    cd hicutils
-    bash install.sh
+    bash hicutils/install.sh
 
 
 After this, ``hicutils`` should be installed and ready for use.
