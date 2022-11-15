@@ -2,6 +2,21 @@ import numpy as np
 
 
 def make_metadata_table(df, pool):
+    '''
+    Generates a metadata table from a pooled DataFrame.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame to use for the metadata table.
+    pool : str
+        The pooling column to use for each row of the table.
+
+    Returns
+    -------
+    A metadata table, indexed by ``pool``.
+
+    '''
     pdf = df.groupby(pool).agg({
         'instances': np.sum,
         'copies': np.sum,

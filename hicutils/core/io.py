@@ -31,6 +31,8 @@ def read_tsvs(path, features=None):
     Single DataFrame containing the concatenated AIRR-formatted data.
 
     '''
+    if features and isinstance(features, str):
+        features = [features]
     dfs = []
     for fn in glob.glob(os.path.join(path, '*.pooled.tsv')):
         df = pd.read_csv(fn, sep='\t', dtype={'subject': str})

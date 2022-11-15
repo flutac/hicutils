@@ -27,4 +27,5 @@ continue to the :doc:`io`.
    install
    io
    filters
+   metadata
    plotting
