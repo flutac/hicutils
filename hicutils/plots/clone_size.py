@@ -120,7 +120,7 @@ def plot_top_clones(
     if annotate:
         for i, p in enumerate(g.patches):
             ax.annotate(
-                df.iloc[i][' '.join(annotate)],
+                ' '.join([str(s) for s in df.iloc[i][annotate]]),
                 (p.get_x() + p.get_width() / 2., p.get_height()),
                 ha='center', va='center', fontsize=10, color='black',
                 rotation=90, xytext=(0, 30),

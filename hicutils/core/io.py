@@ -96,7 +96,8 @@ def read_directory(path):
     return df
 
 
-def save_fig_and_data(name, df, path='./', ext='pdf', **kwargs):
+def save_fig_and_data(name, df, path='./', ext='pdf',
+                      **kwargs):  # pragma: no cover
     '''
     Saves the most recently generated figure and associated data to files.
 
@@ -121,7 +122,7 @@ def save_fig_and_data(name, df, path='./', ext='pdf', **kwargs):
     plt.savefig(f'{path}.{ext}', bbox_inches='tight')
 
 
-def _run_job_and_get_result(prefix, route, out_name):
+def _run_job_and_get_result(prefix, route, out_name):  # pragma: no cover
     resp = requests.get(f'{prefix}/{route}')
     uid = resp.json()['uid']
     logger.info(f'Job for "{route}" has UUID {uid}')
@@ -141,7 +142,8 @@ def _run_job_and_get_result(prefix, route, out_name):
     os.remove(zipfn)
 
 
-def pull_immunedb_data(endpoint, db_name, out_name, skip_existing=True):
+def pull_immunedb_data(endpoint, db_name, out_name,
+                       skip_existing=True):  # pragma: no cover
     '''
     Downloads unpooled clonal data from an ImmuneDB instance.
 
