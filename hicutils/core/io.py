@@ -178,13 +178,11 @@ def pull_immunedb_data(endpoint, db_name, out_name,
         os.mkdir(out_name)
         endpoint = f'{endpoint}/api/{db_name}'
         logger.info(f'Downloading data for {db_name}')
-        '''
         _run_job_and_get_result(
             endpoint,
             'export/clones?format=immunedb&pool_on=sample&samples=T10000',
             out_name
         )
-        '''
 
         resp = requests.post(f'{endpoint}/samples/list').json()
         metadata = pd.DataFrame(
