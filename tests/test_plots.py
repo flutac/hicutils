@@ -149,3 +149,18 @@ def test_top_clones(cutoff):
     g, pdf = plots.plot_top_clones(DF, cutoff=cutoff)
     is_expected(pdf, path + '.tsv')
     plt.savefig(path + '.pdf', bbox_inches='tight')
+
+
+@pytest.mark.parametrize(
+    'pool_by,size,clone_features',
+    [
+        ('subject', 'clones', 'clone_id'),
+        ('disease', 'copies', 'cdr3_aa')
+    ]
+)
+def test_upset(pool_by, size, clone_features):
+    path = f'tests/expected/upset_{pool_by}_{size}_{clone_features}'
+    g, pdf = plots.plot_upset(DF, pool_by, size=size,
+                              clone_features=clone_features)
+    is_expected(pdf, path + '.tsv')
+    plt.savefig(path + '.pdf', bbox_inches='tight')

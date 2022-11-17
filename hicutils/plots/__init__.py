@@ -15,3 +15,4 @@ from .shm import (  # noqa: F401
     plot_shm_aggregate,
     plot_shm_range
 )
+from .upset import plot_upset  # noqa: F401

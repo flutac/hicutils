@@ -142,6 +142,13 @@ def _run_job_and_get_result(prefix, route, out_name):  # pragma: no cover
     os.remove(zipfn)
 
 
+def pull_immunedb_metadata(endpoint):
+    resp = requests.post(f'{endpoint}/samples/list').json()
+    return pd.DataFrame(
+        [{'replicate_name': r['name'], **r['metadata']} for r in resp],
+    )
+
+
 def pull_immunedb_data(endpoint, db_name, out_name,
                        skip_existing=True):  # pragma: no cover
     '''
@@ -184,10 +191,7 @@ def pull_immunedb_data(endpoint, db_name, out_name,
             out_name
         )
 
-        resp = requests.post(f'{endpoint}/samples/list').json()
-        metadata = pd.DataFrame(
-            [{'replicate_name': r['name'], **r['metadata']} for r in resp],
-        )
+        metadata = pull_immunedb_metadata(endpoint)
         metadata.to_csv(f'{out_name}/metadata.tsv', sep='\t', index=False)
         logger.info(f'Complete!  Data is in directory "{out_name}".')
     except FileExistsError as e:

@@ -31,14 +31,21 @@ be scaled in various ways and clustered by row, column, both, or neither.
 
 Clonal Overlap
 --------------
-Clone overlap can be visualized with the ``plot_strings_*`` functions.  Each
-row represents a clone and each column a pool.  The frequency of a given clone
-in a pool can be indicated by the intensity of the corresponding cell if
-desired.  Further, the definition of a clone (defaulting to ``clone_id``) can
-be modified by the ``overlapping_features`` parameter.  For example, to track
-clonal CDR3 amino-acids rather than ``clone_id``, one can specify
-``overlapping_features=['cdr3_aa']``.  See the API documents for more
-parameters.
+Clonal overlap can be visualized by string plots with the ``plot_strings``
+function or as UpSet plots with the ``plot_upset`` function.
+
+For string plots, each row represents a clone and each column a pool.  The
+frequency of a given clone in a pool can be indicated by the intensity of the
+corresponding cell if desired.  Further, the definition of a clone (defaulting
+to ``clone_id``) can be modified by the ``overlapping_features`` parameter.
+For example, to track clonal CDR3 amino-acids rather than ``clone_id``, one can
+specify ``overlapping_features=['cdr3_aa']``.
+
+UpSet plots are an extension of Venn diagrams to show large numbers of
+categories.  These can be plotted using the ``plot_upset`` function and are
+highly configurable.
+
+See the API documents to see all parameters for these functions.
 
 .. raw:: html
    :file: notebooks/plotting/overlap.html

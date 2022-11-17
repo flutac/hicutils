@@ -1,5 +1,6 @@
 import numpy as np
 import seaborn as sns
+import upsetplot as usp
 
 from matplotlib.colors import LinearSegmentedColormap
 
@@ -164,3 +165,80 @@ def plot_strings(
     g.ax_heatmap.set_ylabel('')
 
     return g, ret_df
+
+
+def plot_upset(df, pool, size='clones', clone_features=['clone_id'],
+               subplots=tuple(), subplot_kind='violin', **kwargs):
+    '''
+    Generates an UpSet plot of clonal data.  The UpSet plot may be scaled by
+    clones or copies with ``size`` and the definition of a clone can be varied
+    with the ``clone_features`` parameter.  Further, distributions of other
+    variables such as ``cdr3_num_nts`` and ``shm`` can be placed above each
+    intersection bar with ``subplots``.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame to use as the source of clonal overlap information.
+    pool : str
+        How to pool the clones to calculate overlap.  Each pool value will be
+        treated as a category in the UpSet plot.
+    size : str, ``clones`` or ``copies``
+        The number to use as the cardinality of overlap sizes.
+    clone_features : list(str)
+        The feature(s) to use for clone definition.  The default ``clone_id``
+        uses the clone definitions in ``df``.  This can be altered to any other
+        columns in the DataFrame such as ``cdr3_aa`` to track clones across
+        subjects.
+    subplots : list(str)
+        Features to plot as ``sns.catplot``s above each intersection bar.
+        Valid options are ``shm`` and ``cdr3_num_nts``.
+    subplot_kind : str
+        The kind of plot to use for ``subplots``.  Any valid ``sns.catplot``
+        type is allowed (e.g. ``box``, ``violin``)
+    kwargs : dict
+        Other parameters to pass to ``usp.UpSet``
+
+    Returns
+    -------
+    A tuple ``(g, df)`` where ``g`` is a handle to the plot and ``df`` is the
+    underlying overlap DataFrame.
+
+    '''
+    assert size in ('clones', 'copies')
+    if df.groupby(pool).ngroups < 2:
+        raise IndexError(f'Pool "{pool_on}" must have 2+ values')
+
+    pdf = df.pivot_table(
+        index=clone_features,
+        columns=pool,
+        values=size,
+        aggfunc=np.sum
+    )
+    index = pdf.apply(lambda r: r > 0, axis=1).fillna(False)
+
+    counts_df = df.groupby(clone_features).agg({
+        'clones': lambda v: 1,
+        'copies': np.sum,
+        'shm': np.mean,
+        'cdr3_num_nts': np.mean
+    })
+    cdf = index.join(counts_df).set_index(list(index.columns))
+
+    with sns.plotting_context('notebook'):
+        figure = usp.UpSet(
+            cdf, sum_over=size, element_size=50,
+            intersection_plot_elements=8,
+            **kwargs
+        )
+        for i, field in enumerate(subplots):
+            figure.add_catplot(
+                value=field, kind=subplot_kind, color=sns.color_palette()[i],
+                elements=3
+            )
+        ax = figure.plot()
+
+        for extra in [k for k in ax.keys() if k.startswith('extra')]:
+            ax[extra].set_ylabel(ax[extra].get_ylabel(), fontsize=15)
+            ax[extra].yaxis.tick_right()
+        return ax, cdf
