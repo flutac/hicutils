@@ -3,7 +3,10 @@ from .clone_size import (  # noqa: F401
     plot_top_clones,
     plot_ranges
 )
-from .overlap import plot_strings  # noqa: F401
+from .overlap import (  # noqa: F401
+    plot_strings,
+    plot_upset
+)
 from .gene_usage import plot_gene_usage  # noqa: F401
 from .cdr3_analysis import (  # noqa: F401
     plot_cdr3_aa_usage,
@@ -15,4 +18,4 @@ from .shm import (  # noqa: F401
     plot_shm_aggregate,
     plot_shm_range
 )
-from .upset import plot_upset  # noqa: F401
+from .upset import   # noqa: F401
