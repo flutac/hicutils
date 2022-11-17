@@ -207,7 +207,7 @@ def plot_upset(df, pool, size='clones', clone_features=['clone_id'],
     '''
     assert size in ('clones', 'copies')
     if df.groupby(pool).ngroups < 2:
-        raise IndexError(f'Pool "{pool_on}" must have 2+ values')
+        raise IndexError(f'Pool "{pool}" must have 2+ values')
 
     pdf = df.pivot_table(
         index=clone_features,
