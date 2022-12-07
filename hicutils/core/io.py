@@ -14,7 +14,7 @@ def _cols_without(df, s):
     return [c for c in df.columns if s not in c]
 
 
-def read_tsvs(path, features=None):
+def read_tsvs(path, features=tuple()):
     '''
     Reads AIRR-formatted input files into a single DataFrame and populates
     common fields.
@@ -145,7 +145,13 @@ def _run_job_and_get_result(prefix, route, out_name):  # pragma: no cover
 def pull_immunedb_metadata(endpoint):
     resp = requests.post(f'{endpoint}/samples/list').json()
     return pd.DataFrame(
-        [{'replicate_name': r['name'], **r['metadata']} for r in resp],
+        [
+            {
+                'replicate_name': r['name'],
+                'subject': r['subject']['identifier'],
+                **r['metadata']
+            } for r in resp
+        ],
     )
 
 

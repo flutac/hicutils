@@ -20,6 +20,7 @@ def plot_strings(
         limit=None,
         ylabels='counts',
         order=None,
+        pivot_hook=None,
         **kwargs):
     '''
     Creates an overlap string plot where each row represents a clone and each
@@ -59,6 +60,9 @@ def plot_strings(
     order : function or None
         A function that is passed the pd.DataFrame and shall return a list of
         columns in the desired order.
+    pivot_hook : function or None
+        A function to call on the pivoted table.  Useful for filtering
+        sequences based on their frequency across pools.
 
     Returns
     -------
@@ -88,11 +92,15 @@ def plot_strings(
 
     col_clone_counts = (pdf / pdf).sum()
 
-    pdf = pdf.div(pdf.sum(axis=0), axis=1) * 100
     if only_overlapping:
         pdf = pdf[(pdf / pdf).sum(axis=1) >= 2]
         if len(pdf) == 0:
             raise IndexError('No overlapping clones')
+
+    if pivot_hook:
+        pdf = pivot_hook(pdf)
+
+    pdf = pdf.div(pdf.sum(axis=0), axis=1) * 100
 
     pdf['total'] = pdf.sum(axis=1)
     pdf = (

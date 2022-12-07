@@ -29,4 +29,7 @@ def make_metadata_table(df, pool):
         lambda d: len(d[d.functional == 'T']) / len(d)
     )
     pdf['clones'] = df.groupby(pool).clone_id.nunique()
+    pdf['productive_clones'] = df[
+        df.functional == 'T'
+    ].groupby(pool).clone_id.nunique()
     return pdf
