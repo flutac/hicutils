@@ -16,7 +16,8 @@ def _get_shm(pdf, df, pool, size_metric):
     return ret
 
 
-def plot_shm_distribution(df, pool, size_metric, **kwargs):
+def plot_shm_distribution(df, pool, size_metric, palette=None, order=None,
+                          **kwargs):
     '''
     Plots the SHM distribution of a pooled DataFrame using either clones,
     copies, or uniques as a size metric.
@@ -40,6 +41,9 @@ def plot_shm_distribution(df, pool, size_metric, **kwargs):
 
     assert size_metric in ('clones', 'copies', 'uniques')
     df = df.copy()
+    if order:
+        df['order'] = df[pool].apply(order.index)
+        df = df.sort_values('order').drop('order', axis=1)
     df = _add_counts(df, pool)
     df['shm'] = df['shm'].round()
     df = (
@@ -47,6 +51,14 @@ def plot_shm_distribution(df, pool, size_metric, **kwargs):
         .groupby(['shm', pool])
         .apply(_get_shm, df, pool, size_metric).reset_index()
     )
+
+    final_colors = None
+    if palette:
+        final_colors = {}
+        for label in df[pool].unique():
+            for feature, color in palette.items():
+                if label.rsplit('(')[0].strip() == feature.strip():
+                    final_colors[label] = color
 
     with sns.plotting_context('poster'):
         g = sns.relplot(
@@ -57,6 +69,7 @@ def plot_shm_distribution(df, pool, size_metric, **kwargs):
             kind='line',
             height=kwargs.pop('height', 8),
             aspect=kwargs.pop('aspect', 1.5),
+            palette=final_colors,
             **kwargs
         )
         g.set(

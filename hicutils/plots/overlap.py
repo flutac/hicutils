@@ -171,6 +171,7 @@ def plot_strings(
 
     g.ax_heatmap.set_xlabel('')
     g.ax_heatmap.set_ylabel('')
+    g.ax_heatmap.set_xticklabels(g.ax_heatmap.get_xticklabels(), rotation=90)
 
     return g, ret_df
 
