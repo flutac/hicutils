@@ -5,3 +5,7 @@ A library with general utilities for processing AIRR-seq data for the Human Immu
 ## Installation
 
 - `pip install -e .`
+
+## Documentation
+
+https://hicutils.readthedocs.io
