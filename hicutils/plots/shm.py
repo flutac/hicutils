@@ -192,3 +192,60 @@ def plot_shm_range(df, pool, buckets=(1, 10, 25), **kwargs):
         )
 
     return g, df
+
+
+def plot_shm_distribution_bar(df, pool, size_metric, **kwargs):
+    '''
+    Plots the SHM distribution of a pooled DataFrame using either clones,
+    copies, or uniques as a size metric.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame used to plot the SHM distribution.
+    pool : str
+        The pool to use for plotting.
+    size_metric : str
+        The metric to determine each clones' size.  Must be ``clones``,
+        ``copies``, or ``uniques``.
+
+    Returns
+    -------
+    A tuple ``(g, df)`` where ``g`` is a handle to the plot and ``df`` is the
+    underlying DataFrame.
+
+    '''
+
+    assert size_metric in ('clones', 'copies', 'uniques')
+    df = df.copy()
+    df = _add_counts(df, pool)
+    df['shm'] = df['shm'].round(1)
+    df = (
+        df
+        .groupby(['shm', pool])
+        .apply(_get_shm, df, pool, size_metric).reset_index()
+    )
+    evaluation_bins = [0, .25, .5, .75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75,
+                       3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.25, 5.5,
+                       5.75, 6, 6.25, 6.5, 6.75, 7, 7.25, 7.5, 7.75, 8, 8.25,
+                       8.5, 8.75, 9, 9.25, 9.5, 9.75, 10, float('inf')]
+    df['shm'] = pd.cut(df['shm'], bins=evaluation_bins, include_lowest=True)
+    with sns.plotting_context('poster'):
+        g = sns.catplot(
+            data=df,
+            x='shm',
+            y='size',
+            hue=pool,
+            kind='bar',
+            errorbar=None,
+            height=kwargs.pop('height', 8),
+            aspect=kwargs.pop('aspect', 2),
+            palette=['purple', '#4169E1', '#E1341E'],
+            **kwargs
+        )
+        g.set(
+            xlabel='SHM',
+            ylabel=f'% of {size_metric}',
+        )
+        g.set_xticklabels(rotation=90)
+    return g, df
