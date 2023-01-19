@@ -244,40 +244,38 @@ def plot_ranges(
     return ax, pdf
 
 
-def plot_clone_counts(df, **kwargs):
+def plot_clonecount(df, category, pool,**kwargs):
     '''
-        Plots the clone count of each subject, colored by disease
+    Plots the clone count of each subject, colored by disease
 
-        Parameters
-        ----------
-        df : pd.DataFrame
-            The DataFrame used to plot the clone size distribution.
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame used to plot the clone size distribution.
+    category: str
+        PD dataframe column to use as x tick variables
+    pool: str
+        PD dataframe column to use as hue values
 
-        Returns
-        -------
-        A tuple ``(g, df)`` where ``g`` is a handle to the plot and
-        ``df`` is the underlying DataFrame.
+    Returns
+    -------
+    A tuple ``(g, df)`` where ``g`` is a handle to the plot and
+    ``df`` is the underlying DataFrame.
 
-        '''
-    df2 = pd.DataFrame()
-    df2['subject'] = df['subject']
-    df2['disease'] = df['disease']
-    # df3 = df3.reset_index()
-    df2 = df2.drop_duplicates()
-    df2 = df2.sort_values('subject')
-    df = df.groupby('subject').clone_id.nunique().to_frame().reset_index()
-    pdf = pd.merge(df, df2, on='subject', how='left')
+    '''
+
+    pdf = df.groupby([category, pool]).clone_id.nunique().to_frame().reset_index()
     pdf = pdf.sort_values('clone_id', ascending=False)
+    print(df)
     g = sns.catplot(
         data=pdf,
-        hue='disease',
+        hue=pool,
         y='clone_id',
-        x='subject',
+        x=category,
         kind='bar',
         hue_order=['Aab-', 'Aab+', 't1d'],
         palette=['#4169E1', 'purple', '#E1341E'],
-        aspect=kwargs.pop('aspect', 2),
-        **kwargs
+        aspect=2
     )
     g.set_xticklabels(rotation=90)
     g.set(xlabel='Subject', ylabel='Number of clones')
