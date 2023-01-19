@@ -244,7 +244,7 @@ def plot_ranges(
     return ax, pdf
 
 
-def plot_clonecount(df, category, pool,**kwargs):
+def plot_clonecount(df, pool, hue, palette, **kwargs):
     '''
     Plots the clone count of each subject, colored by disease
 
@@ -252,10 +252,12 @@ def plot_clonecount(df, category, pool,**kwargs):
     ----------
     df : pd.DataFrame
         The DataFrame used to plot the clone size distribution.
-    category: str
-        PD dataframe column to use as x tick variables
     pool: str
+        PD dataframe column to use as x tick variables
+    hue: str
         PD dataframe column to use as hue values
+    palette: dict
+        Dictionary of color palette values for each hue value
 
     Returns
     -------
@@ -264,17 +266,16 @@ def plot_clonecount(df, category, pool,**kwargs):
 
     '''
 
-    pdf = df.groupby([category, pool]).clone_id.nunique().to_frame().reset_index()
+    pdf = df.groupby([pool, hue]).clone_id.nunique().to_frame().reset_index()
     pdf = pdf.sort_values('clone_id', ascending=False)
     print(df)
     g = sns.catplot(
         data=pdf,
-        hue=pool,
+        hue=hue,
         y='clone_id',
-        x=category,
+        x=pool,
         kind='bar',
-        hue_order=['Aab-', 'Aab+', 't1d'],
-        palette=['#4169E1', 'purple', '#E1341E'],
+        palette=palette,
         aspect=2
     )
     g.set_xticklabels(rotation=90)
