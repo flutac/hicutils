@@ -195,7 +195,8 @@ def plot_shm_range(df, pool, buckets=(1, 10, 25), **kwargs):
     return g, df
 
 
-def plot_shm_distribution_bar(df, pool, size_metric, palette, evaluation_bins=np.arange(0,10,.25), **kwargs):
+def plot_shm_distribution_bar(df, pool, size_metric, palette,
+                              evaluation_bins=np.arange(0, 10, .25), **kwargs):
     '''
     Plots the SHM distribution of a pooled DataFrame using either clones,
     copies, or uniques as a size metric.
@@ -229,7 +230,7 @@ def plot_shm_distribution_bar(df, pool, size_metric, palette, evaluation_bins=np
         .apply(_get_shm, df, pool, size_metric).reset_index()
     )
     evaluation_bins = np.append(evaluation_bins, float('inf'))
-    df['shm'] = pd.cut(df['shm'], bins=evaluation_bins,include_lowest=True)
+    df['shm'] = pd.cut(df['shm'], bins=evaluation_bins, include_lowest=True)
     with sns.plotting_context('poster'):
         g = sns.catplot(
             data=df,
@@ -249,4 +250,3 @@ def plot_shm_distribution_bar(df, pool, size_metric, palette, evaluation_bins=np
         )
         g.set_xticklabels(rotation=90)
     return g, df
-
