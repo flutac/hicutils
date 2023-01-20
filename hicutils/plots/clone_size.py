@@ -252,8 +252,8 @@ def plot_clonecount(df, pool, hue, palette, **kwargs):
     ----------
     df : pd.DataFrame
         The DataFrame used to plot the clone size distribution.
-    pool: str
-        PD dataframe column to use as x tick variables
+    pool: str or list
+        PD dataframe column or columns to use as x tick variables
     hue: str
         PD dataframe column to use as hue values
     palette: dict
