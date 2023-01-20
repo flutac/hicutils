@@ -253,9 +253,9 @@ def plot_clonecount(df, pool, hue, palette, **kwargs):
     df : pd.DataFrame
         The DataFrame used to plot the clone size distribution.
     pool: str or list
-        PD dataframe column or columns to use as x tick variables
+        The dataframe column or columns to use as x tick variables
     hue: str
-        PD dataframe column to use as hue values
+        The dataframe column to use as hue values
     palette: dict
         Dictionary of color palette values for each hue value
 
@@ -268,7 +268,6 @@ def plot_clonecount(df, pool, hue, palette, **kwargs):
 
     pdf = df.groupby([pool, hue]).clone_id.nunique().to_frame().reset_index()
     pdf = pdf.sort_values('clone_id', ascending=False)
-    print(df)
     g = sns.catplot(
         data=pdf,
         hue=hue,
